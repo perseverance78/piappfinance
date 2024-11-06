@@ -38,7 +38,13 @@ class AuthController extends Controller
             return response()->json(['error' => 'Credenciales incorrectas'], 401);
         }
 
-        return response()->json(['access_token' => $token]);
+        $user = Auth::user();
+
+        return response()->json([
+            'access_token' => $token,
+            'user_id' => $user->id
+        ]);
+
     }
 
     // Método para cerrar sesión

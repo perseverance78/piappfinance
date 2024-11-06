@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\PresupuestoController;
+use App\Http\Controllers\IngresoController;
+use App\Http\Controllers\GastoController;
 
 
 
@@ -45,4 +47,22 @@ Route::prefix('presupuesto')->middleware('auth:api')->group(function () {
     Route::put('/{id}', [PresupuestoController::class, 'update']); 
     Route::delete('/{id}', [ PresupuestoController::class, 'destroy']); 
 });
+
+Route::prefix('ingreso')->middleware('auth:api')->group(function () {
+    Route::get('/', [IngresoController::class, 'index']); 
+    Route::get('/{id}', [IngresoController::class, 'show']); 
+    Route::post('/', [IngresoController::class, 'store']); 
+    Route::put('/{id}', [IngresoController::class, 'update']); 
+    Route::delete('/{id}', [ IngresoController::class, 'destroy']); 
+});
+
+Route::prefix('gasto')->middleware('auth:api')->group(function () {
+    Route::get('/', [GastoController::class, 'index']); 
+    Route::get('/{id}', [GastoController::class, 'show']); 
+    Route::post('/', [GastoController::class, 'store']); 
+    Route::put('/{id}', [GastoController::class, 'update']); 
+    Route::delete('/{id}', [ GastoController::class, 'destroy']); 
+});
+
+
 
