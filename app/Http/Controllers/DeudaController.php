@@ -1,20 +1,19 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Categoria;
 
+use App\Models\Deuda;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 
-
-class CategoriaController extends Controller
+class DeudaController extends Controller
 {
     public function index()
     {
-        $categorias = Categoria::where('id', Auth::id())->get();
+        $deudas = Deuda::where('id', Auth::id())->get();
 
-        return response()->json($categorias);
+        return response()->json($deudas);
     }
 
     public function store(Request $request)
@@ -22,8 +21,11 @@ class CategoriaController extends Controller
         // Validar la solicitud
         $validator = Validator::make($request->all(), [
             'id' => 'required|exists:users,id',
-            'nombre' => 'required|string|max:50',
-            'tipo' => 'required|in:Ingreso,Gasto',
+            'nombre' => 'required|string|max:100',
+            'monto_total' => 'required|numeric|min:0',
+            'monto_pagado' => 'nullable|numeric|min:0',
+            'fecha_vencimiento' => 'required|date',
+            'recordatorio' => 'boolean',
         ]);
 
         if ($validator->fails()) {
@@ -33,30 +35,30 @@ class CategoriaController extends Controller
             ], 400);
         }
 
-        // Crear la nueva categoría
-        $categoria = Categoria::create($request->all());
+        // Crear la nueva deuda
+        $deuda = Deuda::create($request->all());
 
         return response()->json([
             'success' => true,
-            'data' => $categoria,
-            'message' => 'Categoría creada exitosamente.',
+            'data' => $deuda,
+            'message' => 'Deuda registrada exitosamente.',
         ], 201);
     }
 
     public function show($id)
     {
-        // Obtener una categoría específica
-        $categoria = Categoria::find($id);
-        if (!$categoria) {
+        // Obtener una deuda específica
+        $deuda = Deuda::find($id);
+        if (!$deuda) {
             return response()->json([
                 'success' => false,
-                'message' => 'Categoría no encontrada.',
+                'message' => 'Deuda no encontrada.',
             ], 404);
         }
 
         return response()->json([
             'success' => true,
-            'data' => $categoria,
+            'data' => $deuda,
         ]);
     }
 
@@ -64,8 +66,11 @@ class CategoriaController extends Controller
     {
         // Validar la solicitud
         $validator = Validator::make($request->all(), [
-            'nombre' => 'sometimes|required|string|max:50',
-            'tipo' => 'sometimes|required|in:Ingreso,Gasto',
+            'nombre' => 'sometimes|required|string|max:100',
+            'monto_total' => 'sometimes|required|numeric|min:0',
+            'monto_pagado' => 'nullable|numeric|min:0',
+            'fecha_vencimiento' => 'sometimes|required|date',
+            'recordatorio' => 'boolean',
         ]);
 
         if ($validator->fails()) {
@@ -75,41 +80,40 @@ class CategoriaController extends Controller
             ], 400);
         }
 
-        // Actualizar la categoría
-        $categoria = Categoria::find($id);
-        if (!$categoria) {
+        // Actualizar la deuda
+        $deuda = Deuda::find($id);
+        if (!$deuda) {
             return response()->json([
                 'success' => false,
-                'message' => 'Categoría no encontrada.',
+                'message' => 'Deuda no encontrada.',
             ], 404);
         }
 
-        $categoria->update($request->all());
+        $deuda->update($request->all());
 
         return response()->json([
             'success' => true,
-            'data' => $categoria,
-            'message' => 'Categoría actualizada exitosamente.',
+            'data' => $deuda,
+            'message' => 'Deuda actualizada exitosamente.',
         ]);
     }
 
     public function destroy($id)
     {
-     
-        // Eliminar una categoría
-        $categoria = Categoria::find($id);
-        if (!$categoria) {
+        // Eliminar una deuda
+        $deuda = Deuda::find($id);
+        if (!$deuda) {
             return response()->json([
                 'success' => false,
-                'message' => 'Categoría no encontrada.',
+                'message' => 'Deuda no encontrada.',
             ], 404);
         }
 
-        $categoria->delete();
+        $deuda->delete();
 
         return response()->json([
             'success' => true,
-            'message' => 'Categoría eliminada exitosamente.',
+            'message' => 'Deuda eliminada exitosamente.',
         ]);
     }
 }

@@ -12,7 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('gastos', function (Blueprint $table) {
-            $table->id();
+            $table->id('gasto_id');
+            $table->foreignId('id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('categoria_id')
+            ->constrained('categorias', 'categoria_id') // especifica el campo de referencia
+            ->onDelete('cascade');
+            $table->decimal('monto', 10, 2);
+            $table->date('fecha');
+            $table->string('descripcion')->nullable();
+            $table->boolean('es_fijo')->default(false);
             $table->timestamps();
         });
     }

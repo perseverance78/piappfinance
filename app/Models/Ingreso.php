@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Ingresos extends Model
+class Ingreso extends Model
 {
-    protected $fillable = ['id', 'categoria_id', 'monto', 'fecha', 'descripcion', 'es_fijo'];
+    protected $fillable = ['id', 'monto', 'fecha', 'fuente', 'es_fijo'];
     protected $table = 'ingresos'; 
     protected $primaryKey = 'ingreso_id';
     // public function usuario() {
@@ -17,5 +17,5 @@ class Ingresos extends Model
     // public function categoria() {
     //     return $this->belongsTo(Categoria::class);
     // }
-    // use HasFactory;
+    use HasFactory;
 }

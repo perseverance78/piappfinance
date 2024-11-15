@@ -5,14 +5,16 @@ use App\Models\Presupuesto;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 
 class PresupuestoController extends Controller
 {
     public function index()
     {
-        // Obtener todos los presupuestos
-        return response()->json(Presupuesto::all());
+        $presupuestos = Presupuesto::where('id', Auth::id())->get();
+
+        return response()->json($presupuestos);
     }
 
     public function store(Request $request)

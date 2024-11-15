@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Gasto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+
 
 class GastoController extends Controller
 {
     public function index()
     {
-        // Obtener todos los gastos
-        return response()->json(Gasto::all());
+        $Gastos = Gasto::where('id', Auth::id())->get();
+
+        return response()->json($Gastos);
     }
 
     public function store(Request $request)
@@ -17,7 +22,7 @@ class GastoController extends Controller
         // Validar la solicitud
         $validator = Validator::make($request->all(), [
             'id' => 'required|exists:users,id',
-            'categoria_id' => 'required|exists:categorias,id',
+            'categoria_id' => 'required|exists:categorias,categoria_id',
             'monto' => 'required|numeric|min:0',
             'fecha' => 'required|date',
             'descripcion' => 'nullable|string|max:255',

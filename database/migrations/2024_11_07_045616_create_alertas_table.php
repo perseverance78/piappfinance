@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('gastos', function (Blueprint $table) {
-            $table->id('gasto_id');
+        Schema::create('alertas', function (Blueprint $table) {
+            $table->id('alerta_id');
             $table->foreignId('id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('categoria_id')->constrained('categorias')->onDelete('cascade');
-            $table->decimal('monto', 10, 2);
-            $table->date('fecha');
-            $table->string('descripcion')->nullable();
-            $table->boolean('es_fijo')->default(false);
+            $table->enum('tipo_alerta', ['presupuesto', 'deuda', 'ahorro', 'ingreso', 'gasto_diario']);
+            $table->text('mensaje');
+            $table->date('fecha_alerta');
+            $table->boolean('vista')->default(false);
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('gastos');
+        Schema::dropIfExists('alertas');
     }
 };

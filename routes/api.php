@@ -4,9 +4,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\DeudaController;
 use App\Http\Controllers\PresupuestoController;
 use App\Http\Controllers\IngresoController;
 use App\Http\Controllers\GastoController;
+use App\Http\Controllers\AlertaController;
+use App\Http\Controllers\OjetivoAhorroController;
+use App\Http\Controllers\ReporteController;
+
+
 
 
 
@@ -63,6 +69,46 @@ Route::prefix('gasto')->middleware('auth:api')->group(function () {
     Route::put('/{id}', [GastoController::class, 'update']); 
     Route::delete('/{id}', [ GastoController::class, 'destroy']); 
 });
+
+Route::prefix('alerta')->middleware('auth:api')->group(function () {
+    Route::get('/', [AlertaController::class, 'index']); 
+    Route::get('/{id}', [AlertaController::class, 'show']); 
+    Route::post('/', [AlertaController::class, 'store']); 
+    Route::put('/{id}', [AlertaController::class, 'update']); 
+    Route::delete('/{id}', [ AlertaController::class, 'destroy']); 
+});
+
+Route::prefix('deuda')->middleware('auth:api')->group(function () {
+    Route::get('/', [DeudaController::class, 'index']); 
+    Route::get('/{id}', [DeudaController::class, 'show']); 
+    Route::post('/', [DeudaController::class, 'store']); 
+    Route::put('/{id}', [DeudaController::class, 'update']); 
+    Route::delete('/{id}', [ DeudaController::class, 'destroy']); 
+});
+
+Route::prefix('objetivo-ahorro')->middleware('auth:api')->group(function () {
+    Route::get('/', [ObjetivoAhorroController::class, 'index']); 
+    Route::get('/{id}', [ObjetivoAhorroController::class, 'show']); 
+    Route::post('/', [ObjetivoAhorroController::class, 'store']); 
+    Route::put('/{id}', [ObjetivoAhorroController::class, 'update']); 
+    Route::delete('/{id}', [ ObjetivoAhorroController::class, 'destroy']); 
+});
+
+// Rutas para gráficos y reportes financieros
+Route::prefix('reportes')->middleware('auth:api')->group(function () {
+    Route::get('/resumen-mensual', [ReporteController::class, 'resumenMensual']);
+    Route::get('/graficos/gastos-categoria', [ReporteController::class, 'graficoGastosCategoria']);
+    Route::get('/graficos/ingresos-vs-gastos', [ReporteController::class, 'graficoIngresosVsGastos']);
+    Route::get('/graficos/deudas', [ReporteController::class, 'graficoDeudas']);
+    Route::get('/graficos/progreso-ahorro', [ReporteController::class, 'graficoProgresoAhorro']);
+    Route::get('/saldo-actual', [ReporteController::class, 'saldoActual']);
+    Route::get('/flujo-semanal', [ReporteController::class, 'flujoSemanal']);
+    Route::get('/proyeccion-ingresos-gastos', [ReporteController::class, 'proyeccionIngresosGastos']); 
+   
+});
+
+
+
 
 
 

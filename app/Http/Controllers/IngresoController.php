@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Ingresos;
-use App\Http\Requests\StoreIngresosRequest;
-use App\Http\Requests\UpdateIngresosRequest;
+use App\Models\Ingreso;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
-class IngresosController extends Controller
+class IngresoController extends Controller
 {
     public function index()
     {
-        // Obtener todos los ingresos
-        return response()->json(Ingreso::all());
+        $ingresos = Ingreso::where('id', Auth::id())->get();
+
+        return response()->json($ingresos);
     }
 
     public function store(Request $request)
@@ -64,7 +66,6 @@ class IngresosController extends Controller
         // Validar la solicitud
         $validator = Validator::make($request->all(), [
             'monto' => 'sometimes|required|numeric|min:0',
-            'fecha' => 'sometimes|required|date',
             'fuente' => 'nullable|string|max:100',
             'es_fijo' => 'boolean',
         ]);
